@@ -10,6 +10,10 @@ cd "$ROOT_DIR"
 bash -n fix-pdf.sh
 bash -n install.sh
 
+if command -v python3 >/dev/null 2>&1; then
+    python3 -m py_compile scripts/enable-workflow-service.py
+fi
+
 if ./fix-pdf.sh >"$TMP_DIR/no-args.out" 2>"$TMP_DIR/no-args.err"; then
     echo "Expected ./fix-pdf.sh with no args to fail" >&2
     exit 1

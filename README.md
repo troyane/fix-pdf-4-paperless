@@ -34,6 +34,11 @@ cd fix-pdf
 1. Install Ghostscript via Homebrew if it is not already present.
 2. Copy `Fix PDF for Paperless.workflow` to `~/Library/Services/`.
 3. Flush the macOS services cache and restart Finder.
+4. Attempt to enable the Quick Action in macOS Services preferences.
+
+If the automatic Services preference update fails, the workflow is still
+installed. Enable it manually in **System Settings → Keyboard → Keyboard
+Shortcuts → Services**.
 
 > **First run:** macOS may show a privacy consent dialog asking for Automation
 > or file access permissions. Click **Allow** — this is a one-time prompt.
