@@ -12,7 +12,10 @@ bash -n install.sh
 
 if command -v python3 >/dev/null 2>&1; then
     python3 -m py_compile scripts/enable-workflow-service.py
+    python3 -m py_compile scripts/sync-workflow-command.py
 fi
+
+plutil -p 'Fix PDF for Paperless.workflow/Contents/document.wflow' | grep -q 'next_output_path'
 
 if ./fix-pdf.sh >"$TMP_DIR/no-args.out" 2>"$TMP_DIR/no-args.err"; then
     echo "Expected ./fix-pdf.sh with no args to fail" >&2

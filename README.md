@@ -64,6 +64,21 @@ The original file is never modified.
 It follows the same logic as the Quick Action (same Ghostscript flags, same
 output naming convention).
 
+## Development
+
+`fix-pdf.sh` is the source of truth for the PDF rewrite logic. After changing it,
+sync the Automator workflow:
+
+```bash
+./scripts/sync-workflow-command.py
+```
+
+Then run:
+
+```bash
+./test/smoke.sh
+```
+
 ## Portability
 
 To apply on another Mac:
