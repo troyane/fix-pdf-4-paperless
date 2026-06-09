@@ -24,7 +24,7 @@ brew install ghostscript
 ## Install
 
 ```bash
-git clone https://github.com/you/fix-pdf.git
+git clone https://github.com/troyane/fix-pdf-4-paperless
 cd fix-pdf
 ./install.sh
 ```
@@ -64,7 +64,7 @@ output naming convention).
 To apply on another Mac:
 
 ```bash
-git clone https://github.com/you/fix-pdf.git
+git clone https://github.com/troyane/fix-pdf-4-paperless
 cd fix-pdf
 ./install.sh
 ```
@@ -93,3 +93,7 @@ Ghostscript flags used:
 
 These flags cause Ghostscript to interpret the source PDF and write a clean,
 standards-compliant file — regardless of what the original file contained.
+
+## License
+
+MIT. See `LICENSE`.
