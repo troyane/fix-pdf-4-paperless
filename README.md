@@ -53,6 +53,42 @@ Shortcuts → Services**.
 
 The original file is never modified.
 
+## Security
+
+This tool runs Ghostscript against local PDF files. Ghostscript is invoked with
+`-dSAFER`, but PDFs can still be a risky input format. Keep Ghostscript updated
+and avoid processing files from sources you do not trust.
+
+The installer copies an Automator workflow to `~/Library/Services`, attempts to
+enable it in macOS Services preferences, refreshes the Services cache, and may
+restart Finder.
+
+## Limitations
+
+- The output PDF may be larger than the original because `/prepress` preserves
+  high-quality output and embeds fonts.
+- Some interactive PDF features may be flattened or rewritten by Ghostscript.
+- Password-protected or damaged PDFs may fail to convert.
+- Existing `_fixed.pdf` files are not overwritten; later outputs use suffixes
+  such as `_fixed_2.pdf`.
+
+## Troubleshooting
+
+If the Quick Action does not appear, open **System Settings → Keyboard →
+Keyboard Shortcuts → Services** and enable **Fix PDF for Paperless** manually.
+
+If conversion fails, run the script from Terminal to see the Ghostscript error:
+
+```bash
+./fix-pdf.sh /path/to/file.pdf
+```
+
+If Ghostscript is missing:
+
+```bash
+brew install ghostscript
+```
+
 ## Standalone script
 
 `fix-pdf.sh` can be used directly from the command line:
