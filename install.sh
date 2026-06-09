@@ -35,23 +35,11 @@ echo "Installed: $DEST"
 # New services default to hidden; write both key variants macOS uses so the
 # action appears in Finder's right-click menu without a manual toggle in
 # System Settings → Keyboard → Shortcuts → Services.
-python3 - <<'PYEOF'
-import subprocess, plistlib, os
-prefs = os.path.expanduser("~/Library/Preferences/pbs.plist")
-result = subprocess.run(["plutil", "-convert", "xml1", "-o", "-", prefs],
-                        capture_output=True)
-data = plistlib.loads(result.stdout)
-status = data.setdefault("NSServicesStatus", {})
-modes = {"ContextMenu": 1, "FinderPreview": 1, "ServicesMenu": 1, "TouchBar": 1}
-for key in [
-    "(null) - Fix PDF for Paperless - runWorkflowAsService",
-    "(null) - Fix_PDF_for_Paperless - runWorkflowAsService",
-]:
-    status[key] = {"presentation_modes": modes}
-data["NSServicesStatus"] = status
-with open(prefs, "wb") as f:
-    plistlib.dump(data, f, fmt=plistlib.FMT_BINARY)
-PYEOF
+if command -v python3 >/dev/null 2>&1; then
+    python3 "$SCRIPT_DIR/scripts/enable-workflow-service.py" || echo "Warning: could not enable Quick Action automatically. Enable it manually in System Settings → Keyboard → Keyboard Shortcuts → Services."
+else
+    echo "Warning: python3 not found. Enable the Quick Action manually in System Settings → Keyboard → Keyboard Shortcuts → Services."
+fi
 
 # ── 4. Flush services cache ─────────────────────────────────────────────────────
 killall pbs 2>/dev/null || true

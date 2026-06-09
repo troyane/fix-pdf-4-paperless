@@ -24,7 +24,7 @@ brew install ghostscript
 ## Install
 
 ```bash
-git clone https://github.com/you/fix-pdf.git
+git clone https://github.com/troyane/fix-pdf-4-paperless
 cd fix-pdf
 ./install.sh
 ```
@@ -34,6 +34,11 @@ cd fix-pdf
 1. Install Ghostscript via Homebrew if it is not already present.
 2. Copy `Fix PDF for Paperless.workflow` to `~/Library/Services/`.
 3. Flush the macOS services cache and restart Finder.
+4. Attempt to enable the Quick Action in macOS Services preferences.
+
+If the automatic Services preference update fails, the workflow is still
+installed. Enable it manually in **System Settings → Keyboard → Keyboard
+Shortcuts → Services**.
 
 > **First run:** macOS may show a privacy consent dialog asking for Automation
 > or file access permissions. Click **Allow** — this is a one-time prompt.
@@ -48,6 +53,42 @@ cd fix-pdf
 
 The original file is never modified.
 
+## Security
+
+This tool runs Ghostscript against local PDF files. Ghostscript is invoked with
+`-dSAFER`, but PDFs can still be a risky input format. Keep Ghostscript updated
+and avoid processing files from sources you do not trust.
+
+The installer copies an Automator workflow to `~/Library/Services`, attempts to
+enable it in macOS Services preferences, refreshes the Services cache, and may
+restart Finder.
+
+## Limitations
+
+- The output PDF may be larger than the original because `/prepress` preserves
+  high-quality output and embeds fonts.
+- Some interactive PDF features may be flattened or rewritten by Ghostscript.
+- Password-protected or damaged PDFs may fail to convert.
+- Existing `_fixed.pdf` files are not overwritten; later outputs use suffixes
+  such as `_fixed_2.pdf`.
+
+## Troubleshooting
+
+If the Quick Action does not appear, open **System Settings → Keyboard →
+Keyboard Shortcuts → Services** and enable **Fix PDF for Paperless** manually.
+
+If conversion fails, run the script from Terminal to see the Ghostscript error:
+
+```bash
+./fix-pdf.sh /path/to/file.pdf
+```
+
+If Ghostscript is missing:
+
+```bash
+brew install ghostscript
+```
+
 ## Standalone script
 
 `fix-pdf.sh` can be used directly from the command line:
@@ -59,12 +100,27 @@ The original file is never modified.
 It follows the same logic as the Quick Action (same Ghostscript flags, same
 output naming convention).
 
+## Development
+
+`fix-pdf.sh` is the source of truth for the PDF rewrite logic. After changing it,
+sync the Automator workflow:
+
+```bash
+./scripts/sync-workflow-command.py
+```
+
+Then run:
+
+```bash
+./test/smoke.sh
+```
+
 ## Portability
 
 To apply on another Mac:
 
 ```bash
-git clone https://github.com/you/fix-pdf.git
+git clone https://github.com/troyane/fix-pdf-4-paperless
 cd fix-pdf
 ./install.sh
 ```
@@ -93,3 +149,7 @@ Ghostscript flags used:
 
 These flags cause Ghostscript to interpret the source PDF and write a clean,
 standards-compliant file — regardless of what the original file contained.
+
+## License
+
+MIT. See `LICENSE`.
